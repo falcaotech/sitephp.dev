@@ -4,7 +4,7 @@
         
     <?php
         date_default_timezone_set('America/Sao_paulo');
-        echo date(Y);
+        echo date("Y");
     ?>
 
     </p>

@@ -15,6 +15,7 @@
                         'produtos.php',
                         'servicos.php',
                         'contato.php',
+                        'contato_retorno.php',
                     ];
                     
                     // Verifica se a variavel pagina est no array definido

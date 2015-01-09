@@ -54,13 +54,14 @@
                             // Se NÃO estiver permitido, inclui o arquivo de permissão negada
                             require_once '403.php';
                             // envia uma mensagem de erro do tipo 404 para o servidor
-                            header('HTTP/1.0 403 Forbidden');
+                            http_response_code(403); 
                         }
                     } else {
                         // se o arquivo NÃO existir, inclui o arquivo de página não encontrada
                         require_once '404.php';
                         // envia uma mensagem de erro do tipo 404 para o servidor
-                        header("HTTP/1.0 404 Not Found"); // REQUISITO 2: Você deverá apresentar uma mensagem de erro 404 caso a url acessada seja inválida (não esqueça de enviar o STATUS CODE 404)
+                        http_response_code(404);
+                        
                     }
                  
                 }

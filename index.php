@@ -3,6 +3,31 @@
     <div class="span10 conteudo">
         <div class="row">
             <?php
+            
+                // Função que verifica se a página requisitada é permitida, ou seja,
+                // está em um array pré-definido com as rotas possíveis
+                function verificaRota($pagina) { // REQUISITO 3: Crie uma função para fazer a verificação das rotas
+                       
+                    // Cria um arra com os arquivos possíveis de serem carregados
+                    $rotas = [ // REQUISITO 4: Registre cada uma das rotas em um array
+                        'home.php',
+                        'empresa.php',
+                        'produtos.php',
+                        'servicos.php',
+                        'contato.php',
+                    ];
+                    
+                    // Verifica se a variavel pagina est no array definido
+                    if (in_array($pagina, $rotas)) {
+                        // Se estiver, retorna verdadeiro
+                        return true;
+                    } else {
+                        // Se não estiver, retorna falso
+                        return false;
+                    }
+
+                }
+            
                 function pegaConteudo()
                 {
                     // Pegando a URL completa
@@ -17,23 +42,26 @@
                     // guarda na variavel pagina o primeiro parametro acrescentado do '.php'
                     $pagina = (isset($parametros[0]) && !empty($parametros[0])) ? $parametros[0].'.php' : 'home.php';
                     
-                    // Cria um arra com os arquivos possveis de serem carregados
-                    $rotas = [
-                        'home.php',
-                        'empresa.php',
-                        'produtos.php',
-                        'servicos.php',
-                        'contato.php',
-                    ];
-                    
-                    // Verifica se a variavel pagina est no array definido
-                    if (in_array($pagina, $rotas)) {
-                        // Se estiver, inclui o arquivo
-                        require_once $pagina;
+                    // Verifica se o arquivo referente à página existe
+                    if (file_exists($pagina)) { // REQUISITO 1: Você deverá verificar sempre se o arquivo acessado existe
+                        
+                        // Se o arquivo existir, verifica se está nos arquivos permitidos
+                        if (verificaRota($pagina)) {
+                            // Se estiver permitido, inclui o arquivo
+                            require_once $pagina;
+                        } else {
+                            // Se NÃO estiver permitido, inclui o arquivo de permissão negada
+                            require_once '403.php';
+                            // envia uma mensagem de erro do tipo 404 para o servidor
+                            header('HTTP/1.0 403 Forbidden');
+                        }
                     } else {
-                        // Se não estiver, inclui o 404.php
+                        // se o arquivo NÃO existir, inclui o arquivo de página não encontrada
                         require_once '404.php';
+                        // envia uma mensagem de erro do tipo 404 para o servidor
+                        header("HTTP/1.0 404 Not Found"); // REQUISITO 2: Você deverá apresentar uma mensagem de erro 404 caso a url acessada seja inválida (não esqueça de enviar o STATUS CODE 404)
                     }
+                 
                 }
                 // Executa a funço pegaConteudo 
                 pegaConteudo();
